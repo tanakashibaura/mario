@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>メモ</title>
+    <style>
+        h1 {
+            /*margin: 1em 0;*/
+            font-size: 250%;
+            font-weight: normal;
+        }
+        /* 画像を縦に並べるコンテナのスタイル */
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 画像を中央に配置 */
+        }
+
+        /* 画像のスタイル */
+        .image {
+            max-width: 100%; /* 幅を親要素に合わせる */
+            height: auto; /* 高さは自動調整 */
+            margin: 10px 0; /* 画像間の余白 */
+        }
+
+        /* キャプションのスタイル */
+        .caption {
+            text-align: center;
+            font-size: 30px; /* フォントサイズを調整（ここでは18pxに設定） */
+        }
+    </style>
+</head>
+<body>
+    <h1>途中結果(論文完成時には削除予定)</h1>
+    <div class="image-container">
+        <figure>
+            <figcaption class="caption">報酬を変更したやつ</figcaption>
+            <img class="image" src="mario_10000.gif" alt="First GIF Image">
+            <br />
+        </figure>
+    </div>
+    上のはとりあえず10000エピソードで実行<br />
+    50000エピソードでやってみた
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_PER-50000.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    なんで？すぐ死ぬ<br />
+    右行くよりすぐ死ぬほうが収益いいのか？<br />
+    時間のペナルティなしでやってみる
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_30000.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    今まで一番いいｲｴ━━٩(*´ᗜ`)ㅅ(ˊᗜˋ*)و━━ｲ
+    <center>
+        <a href="index.html">トップ</a>
+        &emsp;
+        &emsp;
+        <a href="test1.html">DDQN</a>
+        &emsp;
+        &emsp;
+        <a href="test3.html">PER</a>
+        &emsp;
+        &emsp;
+        <a href="test2.html">DDQN遊び</a>
+    </center>
+
+    <script>
+        function setImgWidth() {
+            const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            const images = document.querySelectorAll(".image");
+
+            // ウィンドウの幅と高さのうち、小さい方を取得
+            const smallerDimension = Math.min(windowWidth, windowHeight);
+
+            // 画像の幅を設定
+            images.forEach(image => {
+                image.style.width = smallerDimension + "px";
+            });
+        }
+
+        // ページ読み込み時に初回のサイズを設定
+        setImgWidth();
+
+        // ウィンドウサイズが変更されたときにサイズを自動更新
+        window.addEventListener("resize", setImgWidth);
+    </script>
+</body>
+</html>
