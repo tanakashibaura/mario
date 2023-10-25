@@ -27,7 +27,19 @@
             text-align: center;
             font-size: 30px; /* フォントサイズを調整（ここでは18pxに設定） */
         }
+        pre {
+            margin: 1em 0;
+            padding: 1em;
+            border-radius: 5px;
+            background: #25292f;
+            color: #fff;
+            overflow-x: auto; /* ⭐ */
+            -webkit-overflow-scrolling: touch; /* ⭐ */
+        }
+        
     </style>
+    <link rel="stylesheet" href="./css/prism.css">
+    <script src="./js/prism.js"></script>
 </head>
 <body>
     <h1>途中結果(論文完成時には削除予定)</h1>
@@ -56,6 +68,73 @@
         </figure>
     </div>
     今まで一番いいｲｴ━━٩(*´ᗜ`)ㅅ(ˊᗜˋ*)و━━ｲ
+
+    <h2>続き</h2>
+    ジャンプをたくさんするように下のソースコードのような報酬を追加で設定していた.
+    <pre class="line-numbers"><code class="language-python">def _y_reward(self):
+    if self._y_position < 79:
+       return 0
+    _reward = (self._y_position - self._y_position_last) / 10
+    self._y_position_last = self._y_position
+    return _reward
+</code></pre>
+    これを下のように_rewardの値を増やした.
+    <pre class="line-numbers"><code class="language-python">def _y_reward(self):
+    if self._y_position < 79:
+        return 0
+    _reward = (self._y_position - self._y_position_last) / 5
+    self._y_position_last = self._y_position
+    return _reward
+</code></pre>
+    これで10000エピソード実行させた.
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_no_penalty1.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    半分までいったら途中から再開してる!?途中から再開もありなら一番いい!!!<br />
+    上の_y_reward関数の_reward確認したら上昇中はプラスの報酬だけど下降中はマイナスの報酬になってることに気づいた.<br />
+    変更
+    <pre class="line-numbers"><code class="language-python">def _y_reward(self):
+    if (self._y_position <= 79) or (self._y_position - self._y_position_last < 0):
+        return 0
+    _reward = (self._y_position - self._y_position_last) / 5
+    self._y_position_last = self._y_position
+    return _reward
+</code></pre>
+    これも10000エピソードで実行
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_max.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    もっとジャンプするようになった. これも途中から再開してる. スターは運よく取ってる. <br />
+    このクリボーさえ超えていればゴールだったのに (ﾓｰ! ＜＜o(＞-＜)o＞＞ ｸﾔｼｨｰ!!)<br />
+    何回か実行して偶然キノコ取ったバージョン
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_interst.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    途中から再開できることを知ったので, マリオが死ぬ前の状態に戻せるのではないかと考える. <br />
+    調べたら<a href="https://akiyah.hatenablog.com/entry/2022/12/29/025828">gym-super-mario-bros 1-1を1歩ずつ5歩先のrewardを計算してクリアする</a>にあった.<br />
+    とりあえず真似して実行させた.
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_5手先.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    5歩先までマリオを進めて, その時のrewardを記録し, resetして戻る. 2<sup>5</sup>=32パターンのうちで一番大きいrewardに繋がる1歩目を採用して進み, そこでbackupするらしい. <br />
+    ゴールはしたけど自分がやりたかった学習方法ではない...そもそも深層強化学習でもない気がする. <br />
+    しかもGPUまったく使わないし, 実際にDDQNでゴールできるやつは1日かけて学習させるのに, これは20分で終わった. <br />
+    深層強化学習は実行させるたびに異なる結果が得られるのにこれはまったく同じのしか出ない. どういうこと?<br />
+    不採用<br />
+    地道に報酬変えて頑張るしかないみたい...(*´-Д-)ﾊｧ=3
+
     <center>
         <a href="index.html">トップ</a>
         &emsp;
