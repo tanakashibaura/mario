@@ -134,7 +134,43 @@
     深層強化学習は実行させるたびに異なる結果が得られるのにこれはまったく同じのしか出ない. どういうこと?<br />
     不採用<br />
     地道に報酬変えて頑張るしかないみたい...(*´-Д-)ﾊｧ=3
-
+    <h1>続きから(2023/11/14)</h1>
+    マリオの行動を['NOOP'],['right'],['right', 'A'],['right', 'B'],['right', 'A', 'B'],['A'],['left']の7種類から
+    ['right', 'B'], ['right', 'A', 'B']の2種類に変更して学習!!
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_2act.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    ほとんどマリオが半分までいけるようになった.
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_clear.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    上の奴は運が良かったのかな?なんかゴールした.
+    <pre class="line-numbers"><code class="language-python">def _fall_hole_penalty(self):
+        if self._y_viewport > 1:
+        return -25
+    return 0
+</code></pre>
+    <pre class="line-numbers"><code class="language-python">def _get_score(self):
+    if self._score > self._score_last:
+        _reward = (self._score - self._score_last) / 10
+        self._score_last = self._score
+        return _reward
+    return 0
+</code></pre>
+    穴に落ちたらマイナスの報酬を与える関数とスコアが増えたら報酬を与える関数を加えた.
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_hole_score.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    思った通りに学習してくれない.以上!
     <center>
         <a href="index.html">トップ</a>
         &emsp;
