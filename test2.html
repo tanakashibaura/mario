@@ -36,12 +36,22 @@
             overflow-x: auto; /* ⭐ */
             -webkit-overflow-scrolling: touch; /* ⭐ */
         }
-        
+        .page-contents{
+            list-style:none;
+            padding-left:5px;
+        }
     </style>
     <link rel="stylesheet" href="./css/prism.css">
     <script src="./js/prism.js"></script>
 </head>
 <body>
+    <center>
+        <ol class="page-contents">
+            <li><a href="#i1">続きから</a></li>
+            <li><a href="#i2">続きから(2023/11/14)</a></li>
+            <li><a href="#i3">続きから(2023/11/20)</a></li>
+        </ol>
+    </center>
     <h1>途中結果(論文完成時には削除予定)</h1>
     <div class="image-container">
         <figure>
@@ -69,7 +79,7 @@
     </div>
     今まで一番いいｲｴ━━٩(*´ᗜ`)ㅅ(ˊᗜˋ*)و━━ｲ
 
-    <h2>続き</h2>
+    <h2 id="i1">続きから</h2>
     ジャンプをたくさんするように下のソースコードのような報酬を追加で設定していた.
     <pre class="line-numbers"><code class="language-python">def _y_reward(self):
     if self._y_position < 79:
@@ -134,7 +144,7 @@
     深層強化学習は実行させるたびに異なる結果が得られるのにこれはまったく同じのしか出ない. どういうこと?<br />
     不採用<br />
     地道に報酬変えて頑張るしかないみたい...(*´-Д-)ﾊｧ=3
-    <h1>続きから(2023/11/14)</h1>
+    <h2 id="i2">続きから(2023/11/14)</h2>
     マリオの行動を['NOOP'],['right'],['right', 'A'],['right', 'B'],['right', 'A', 'B'],['A'],['left']の7種類から
     ['right', 'B'], ['right', 'A', 'B']の2種類に変更して学習!!
     <div class="image-container">
@@ -171,6 +181,35 @@
         </figure>
     </div>
     思った通りに学習してくれない.以上!
+    <h2 id="i3">続きから(2023/11/20)</h2>
+    とりあえずいい感じにクリアしたやつ
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_clear1.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    報酬大きくしてしまった感じがするからy_rewardの報酬を少し変えてみた.
+    <pre class="line-numbers"><code class="language-python">def _y_reward(self):
+    _reward = 0
+    if self._y_position - 79:
+        _reward += 1
+    if self._y_max_position < self._y_position:
+        _reward += 1
+        self._y_max_position = self._y_position
+    if _reward < 0:
+        return 0
+    return _reward
+</code></pre>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_test2.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    最初の方は安全に進んでいるが, 半分超えると進む速度がおかしい. <br />
+    いろいろ報酬変えてみたものの余りうまくいかない.<br />
+    マリオの姿で何か判定できないか試行錯誤中(空中の体勢でさらにジャンプならプラスの報酬とか).
     <center>
         <a href="index.html">トップ</a>
         &emsp;
