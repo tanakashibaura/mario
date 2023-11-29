@@ -50,6 +50,7 @@
             <li><a href="#i1">続きから</a></li>
             <li><a href="#i2">続きから(2023/11/14)</a></li>
             <li><a href="#i3">続きから(2023/11/20)</a></li>
+            <li><a href="#i4">続きから(2023/11/30)</a></li>
         </ol>
     </center>
     <h1>途中結果(論文完成時には削除予定)</h1>
@@ -210,6 +211,68 @@
     最初の方は安全に進んでいるが, 半分超えると進む速度がおかしい. <br />
     いろいろ報酬変えてみたものの余りうまくいかない.<br />
     マリオの姿で何か判定できないか試行錯誤中(空中の体勢でさらにジャンプならプラスの報酬とか).
+    <h2 id="i4">続きから(2023/11/30)</h2>
+    np.random.rand(0)のようにseedを固定して0から9まで10000回学習させた.
+    <div class="image-container">
+        <figure>
+            <img class="image" src="reward_all.png" alt="Second GIF Image">
+            <figcaption class="caption">↑全体で見た時の報酬</figcaption>
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="reward_first.png" alt="Second GIF Image">
+            <figcaption class="caption">↑最初の方の報酬</figcaption>
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="reward_final.png" alt="Second GIF Image">
+            <figcaption class="caption">↑最後の方の報酬</figcaption>
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="loss_all.png" alt="Second GIF Image">
+            <figcaption class="caption">↑全体で見た時の損失</figcaption>
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="loss_first.png" alt="Second GIF Image">
+            <figcaption class="caption">↑最初の方の損失</figcaption>
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="loss_final.png" alt="Second GIF Image">
+            <figcaption class="caption">↑最後の方の損失</figcaption>
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="q_all.png" alt="Second GIF Image">
+            <figcaption class="caption">↑全体で見た時のQ関数</figcaption>
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="q_first.png" alt="Second GIF Image">
+            <figcaption class="caption">↑最初の方のQ関数</figcaption>
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="q_final.png" alt="Second GIF Image">
+            <figcaption class="caption">↑最後の方のQ関数</figcaption>
+        </figure>
+    </div>
+    seedが1のときが良さそう?(10回もやる必要なかたかも)<br />
+    探索に乱数を使ってたからnp.random.seed()で固定すればうまくと思っていたが, ニューラルネットワークのパラメータを初期値に乱数を使っていたことを昨日の夜思い出したが時既に遅し. <br />
+    ニューラルネットワークのパラメータはtorch.manual_seed()を使うっぽい. <font color="red">今回はマリオのランダム性が高いため, 動画は作ってないです.</font> 次回までに頑張ります. 
     <center>
         <a href="index.html">トップ</a>
         &emsp;
