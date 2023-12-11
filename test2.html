@@ -8,25 +8,19 @@
             font-size: 250%;
             font-weight: normal;
         }
-        /* 画像を縦に並べるコンテナのスタイル */
+        /* 画像を横に並べるコンテナのスタイル */
         .image-container {
             display: flex;
-            flex-direction: column;
+            justify-content: center; /* 画像を横に配置 */
             align-items: center; /* 画像を中央に配置 */
         }
 
-        /* 画像のスタイル */
-        .image {
-            max-width: 100%; /* 幅を親要素に合わせる */
-            height: auto; /* 高さは自動調整 */
-            margin: 10px 0; /* 画像間の余白 */
+        /* 各画像とキャプションのコンテナのスタイル */
+        .image-caption-container {
+            text-align: center;
+            margin: 0 10px; /* 画像とキャプションの間の余白 */
         }
 
-        /* キャプションのスタイル */
-        .caption {
-            text-align: center;
-            font-size: 30px; /* フォントサイズを調整（ここでは18pxに設定） */
-        }
         pre {
             margin: 1em 0;
             padding: 1em;
@@ -36,21 +30,50 @@
             overflow-x: auto; /* ⭐ */
             -webkit-overflow-scrolling: touch; /* ⭐ */
         }
-        .page-contents{
-            list-style:none;
-            padding-left:5px;
+        /* 画像のスタイル */
+        .image {
+            max-width: 100%; /* 幅を親要素に合わせる */
+            height: auto; /* 高さは自動調整 */
+        }
+
+        /* キャプションのスタイル */
+        .caption {
+            text-align: center;
+            font-size: 30px; /* フォントサイズを調整（ここでは18pxに設定） */
+        }
+
+        .page-contents {
+            list-style: none;
+            padding-left: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 30%;
+            margin: auto;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
         }
     </style>
     <link rel="stylesheet" href="./css/prism.css">
     <script src="./js/prism.js"></script>
 </head>
 <body>
+
     <center>
         <ol class="page-contents">
             <li><a href="#i1">続きから</a></li>
             <li><a href="#i2">続きから(2023/11/14)</a></li>
             <li><a href="#i3">続きから(2023/11/20)</a></li>
             <li><a href="#i4">続きから(2023/11/30)</a></li>
+            <li><a href="#i5">続きから(2023/12/12)</a></li>
         </ol>
     </center>
     <h1>途中結果(論文完成時には削除予定)</h1>
@@ -212,7 +235,7 @@
     いろいろ報酬変えてみたものの余りうまくいかない.<br />
     マリオの姿で何か判定できないか試行錯誤中(空中の体勢でさらにジャンプならプラスの報酬とか).
     <h2 id="i4">続きから(2023/11/30)</h2>
-    np.random.rand(0)のようにseedを固定して0から9まで10000回学習させた.
+    np.random.seed(0)のようにseedを固定して0から9まで10000回学習させた.
     <div class="image-container">
         <figure>
             <img class="image" src="reward_all.png" alt="Second GIF Image">
@@ -272,7 +295,152 @@
     </div>
     seedが1のときが良さそう?(10回もやる必要なかたかも)<br />
     探索に乱数を使ってたからnp.random.seed()で固定すればうまくと思っていたが, ニューラルネットワークのパラメータを初期値に乱数を使っていたことを昨日の夜思い出したが時既に遅し. <br />
-    ニューラルネットワークのパラメータはtorch.manual_seed()を使うっぽい. <font color="red">今回はマリオのランダム性が高いため, 動画は作ってないです.</font> 次回までに頑張ります. 
+    ニューラルネットワークのパラメータはtorch.manual_seed()を使うっぽい. <font color="red">今回はマリオのランダム性が高いため, 動画は作ってないです.</font> 次回までに頑張ります.
+    <h2 id="i5">続きから(2023/12/12)</h2>
+    前回seedを固定できていなかった部分を直して0から9までの10個のseedで5000回学習させた.
+
+    <div class="image-container">
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed0_max.gif" alt="First GIF Image">
+            <figcaption class="caption">seed=0</figcaption>
+        </div>
+
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed1_max.gif" alt="Second GIF Image">
+            <figcaption class="caption">seed=1</figcaption>
+        </div>
+    </div>
+    <div class="image-container">
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed2_max.gif" alt="First GIF Image">
+            <figcaption class="caption">seed=2</figcaption>
+        </div>
+
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed3_max.gif" alt="Second GIF Image">
+            <figcaption class="caption">seed=3</figcaption>
+        </div>
+    </div>
+    <div class="image-container">
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed4_max.gif" alt="First GIF Image">
+            <figcaption class="caption">seed=4</figcaption>
+        </div>
+
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed5_max.gif" alt="Second GIF Image">
+            <figcaption class="caption">seed=5</figcaption>
+        </div>
+    </div>
+    <div class="image-container">
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed6_max.gif" alt="First GIF Image">
+            <figcaption class="caption">seed=6</figcaption>
+        </div>
+
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed7_max.gif" alt="Second GIF Image">
+            <figcaption class="caption">seed=7</figcaption>
+        </div>
+    </div>
+    <div class="image-container">
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed8_max.gif" alt="First GIF Image">
+            <figcaption class="caption">seed=8</figcaption>
+        </div>
+
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed9_max.gif" alt="Second GIF Image">
+            <figcaption class="caption">seed=9</figcaption>
+        </div>
+    </div>
+    上のは20回実行させて一番長く進んだものである. <br />
+    また, 下の表は20回実行させた時の各seedの結果である. max_longとmin_longは1-1をどれくらい進んだかの割合である. 
+    <table>
+        <caption class="caption">20回実行させた時の各seedの結果</caption>
+        <thead>
+            <tr>
+                <th>seed</th>
+                <th>mean_long</th>
+                <th>mean_reward</th>
+                <th>max_long</th>
+                <th>min_long</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0</td>
+                <td>786</td>
+                <td>1926.1</td>
+                <td>0.511</td>
+                <td>0.113</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>670</td>
+                <td>1198.7</td>
+                <td>0.512</td>
+                <td>0.107</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>909</td>
+                <td>1301.5</td>
+                <td>0.985</td>
+                <td>0.105</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>850</td>
+                <td>1203.6</td>
+                <td>0.545</td>
+                <td>0.109</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>825</td>
+                <td>1162.0</td>
+                <td>0.718</td>
+                <td>0.109</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>944</td>
+                <td>1388.6</td>
+                <td>0.647</td>
+                <td>0.105</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>763</td>
+                <td>1052.6</td>
+                <td>0.508</td>
+                <td>0.108</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>723</td>
+                <td>1590.8</td>
+                <td>0.510</td>
+                <td>0.105</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>868</td>
+                <td>1226.3</td>
+                <td>0.694</td>
+                <td>0.107</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>710</td>
+                <td>976.9</td>
+                <td>0.504</td>
+                <td>0.105</td>
+            </tr>
+        </tbody>
+    </table>
+    seed2が一番ゴールまで近づいていることがわかる. どのseedでも最大半分までは行くことが分かった. 
     <center>
         <a href="index.html">トップ</a>
         &emsp;
