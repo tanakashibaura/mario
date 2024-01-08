@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>メモ</title>
+    <style>
+        h1 {
+            /*margin: 1em 0;*/
+            font-size: 250%;
+            font-weight: normal;
+        }
+        /* 画像を横に並べるコンテナのスタイル */
+        .image-container {
+            display: flex;
+            justify-content: center; /* 画像を横に配置 */
+            align-items: center; /* 画像を中央に配置 */
+        }
+
+        /* 各画像とキャプションのコンテナのスタイル */
+        .image-caption-container {
+            text-align: center;
+            margin: 0 10px; /* 画像とキャプションの間の余白 */
+        }
+
+        pre {
+            margin: 1em 0;
+            padding: 1em;
+            border-radius: 5px;
+            background: #25292f;
+            color: #fff;
+            overflow-x: auto; /* ⭐ */
+            -webkit-overflow-scrolling: touch; /* ⭐ */
+        }
+        /* 画像のスタイル */
+        .image {
+            max-width: 100%; /* 幅を親要素に合わせる */
+            height: auto; /* 高さは自動調整 */
+        }
+
+        /* キャプションのスタイル */
+        .caption {
+            text-align: center;
+            font-size: 30px; /* フォントサイズを調整（ここでは18pxに設定） */
+        }
+
+        .page-contents {
+            list-style: none;
+            padding-left: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 30%;
+            margin: auto;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <link rel="stylesheet" href="./css/prism.css">
+    <script src="./js/prism.js"></script>
+</head>
+<body>
+
+    <center>
+        <ol class="page-contents">
+            <li><a href="#i1">続きから</a></li>
+            <li><a href="#i2">続きから(2023/11/14)</a></li>
+            <li><a href="#i3">続きから(2023/11/20)</a></li>
+            <li><a href="#i4">続きから(2023/11/30)</a></li>
+            <li><a href="#i5">続きから(2023/12/12)</a></li>
+            <li><a href="#i6">続きから(2024/01/10)</a></li>
+        </ol>
+    </center>
+    <h1>途中結果(論文完成時には削除予定)</h1>
+    <div class="image-container">
+        <figure>
+            <figcaption class="caption">報酬を変更したやつ</figcaption>
+            <img class="image" src="mario_10000.gif" alt="First GIF Image">
+            <br />
+        </figure>
+    </div>
+    上のはとりあえず10000エピソードで実行<br />
+    50000エピソードでやってみた
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_PER-50000.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    なんで？すぐ死ぬ<br />
+    右行くよりすぐ死ぬほうが収益いいのか？<br />
+    時間のペナルティなしでやってみる
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_30000.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    今まで一番いいｲｴ━━٩(*´ᗜ`)ㅅ(ˊᗜˋ*)و━━ｲ
+
+    <h2 id="i1">続きから</h2>
+    ジャンプをたくさんするように下のソースコードのような報酬を追加で設定していた.
+    <pre class="line-numbers"><code class="language-python">def _y_reward(self):
+    if self._y_position < 79:
+       return 0
+    _reward = (self._y_position - self._y_position_last) / 10
+    self._y_position_last = self._y_position
+    return _reward
+</code></pre>
+    これを下のように_rewardの値を増やした.
+    <pre class="line-numbers"><code class="language-python">def _y_reward(self):
+    if self._y_position < 79:
+        return 0
+    _reward = (self._y_position - self._y_position_last) / 5
+    self._y_position_last = self._y_position
+    return _reward
+</code></pre>
+    これで10000エピソード実行させた.
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_no_penalty1.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    半分までいったら途中から再開してる!?途中から再開もありなら一番いい!!!<br />
+    上の_y_reward関数の_reward確認したら上昇中はプラスの報酬だけど下降中はマイナスの報酬になってることに気づいた.<br />
+    変更
+    <pre class="line-numbers"><code class="language-python">def _y_reward(self):
+    if (self._y_position <= 79) or (self._y_position - self._y_position_last < 0):
+        return 0
+    _reward = (self._y_position - self._y_position_last) / 5
+    self._y_position_last = self._y_position
+    return _reward
+</code></pre>
+    これも10000エピソードで実行
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_max.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    もっとジャンプするようになった. これも途中から再開してる. スターは運よく取ってる. <br />
+    このクリボーさえ超えていればゴールだったのに (ﾓｰ! ＜＜o(＞-＜)o＞＞ ｸﾔｼｨｰ!!)<br />
+    何回か実行して偶然キノコ取ったバージョン
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_interst.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    途中から再開できることを知ったので, マリオが死ぬ前の状態に戻せるのではないかと考える. <br />
+    調べたら<a href="https://akiyah.hatenablog.com/entry/2022/12/29/025828">gym-super-mario-bros 1-1を1歩ずつ5歩先のrewardを計算してクリアする</a>にあった.<br />
+    とりあえず真似して実行させた.
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_5手先.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    5歩先までマリオを進めて, その時のrewardを記録し, resetして戻る. 2<sup>5</sup>=32パターンのうちで一番大きいrewardに繋がる1歩目を採用して進み, そこでbackupするらしい. <br />
+    ゴールはしたけど自分がやりたかった学習方法ではない...そもそも深層強化学習でもない気がする. <br />
+    しかもGPUまったく使わないし, 実際にDDQNでゴールできるやつは1日かけて学習させるのに, これは20分で終わった. <br />
+    深層強化学習は実行させるたびに異なる結果が得られるのにこれはまったく同じのしか出ない. どういうこと?<br />
+    不採用<br />
+    地道に報酬変えて頑張るしかないみたい...(*´-Д-)ﾊｧ=3
+    <h2 id="i2">続きから(2023/11/14)</h2>
+    マリオの行動を['NOOP'],['right'],['right', 'A'],['right', 'B'],['right', 'A', 'B'],['A'],['left']の7種類から
+    ['right', 'B'], ['right', 'A', 'B']の2種類に変更して学習!!
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_2act.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    ほとんどマリオが半分までいけるようになった.
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_clear.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    上の奴は運が良かったのかな?なんかゴールした.
+    <pre class="line-numbers"><code class="language-python">def _fall_hole_penalty(self):
+        if self._y_viewport > 1:
+        return -25
+    return 0
+</code></pre>
+    <pre class="line-numbers"><code class="language-python">def _get_score(self):
+    if self._score > self._score_last:
+        _reward = (self._score - self._score_last) / 10
+        self._score_last = self._score
+        return _reward
+    return 0
+</code></pre>
+    穴に落ちたらマイナスの報酬を与える関数とスコアが増えたら報酬を与える関数を加えた.
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_hole_score.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    思った通りに学習してくれない.以上!
+    <h2 id="i3">続きから(2023/11/20)</h2>
+    とりあえずいい感じにクリアしたやつ
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_clear1.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    報酬大きくしてしまった感じがするからy_rewardの報酬を少し変えてみた.
+    <pre class="line-numbers"><code class="language-python">def _y_reward(self):
+    _reward = 0
+    if self._y_position - 79:
+        _reward += 1
+    if self._y_max_position < self._y_position:
+        _reward += 1
+        self._y_max_position = self._y_position
+    if _reward < 0:
+        return 0
+    return _reward
+</code></pre>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="mario_test2.gif" alt="Second GIF Image">
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    最初の方は安全に進んでいるが, 半分超えると進む速度がおかしい. <br />
+    いろいろ報酬変えてみたものの余りうまくいかない.<br />
+    マリオの姿で何か判定できないか試行錯誤中(空中の体勢でさらにジャンプならプラスの報酬とか).
+    <h2 id="i4">続きから(2023/11/30)</h2>
+    np.random.seed(0)のようにseedを固定して0から9まで10000回学習させた.
+    <div class="image-container">
+        <figure>
+            <img class="image" src="reward_all.png" alt="Second GIF Image">
+            <figcaption class="caption">↑全体で見た時の報酬</figcaption>
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="reward_first.png" alt="Second GIF Image">
+            <figcaption class="caption">↑最初の方の報酬</figcaption>
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="reward_final.png" alt="Second GIF Image">
+            <figcaption class="caption">↑最後の方の報酬</figcaption>
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="loss_all.png" alt="Second GIF Image">
+            <figcaption class="caption">↑全体で見た時の損失</figcaption>
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="loss_first.png" alt="Second GIF Image">
+            <figcaption class="caption">↑最初の方の損失</figcaption>
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="loss_final.png" alt="Second GIF Image">
+            <figcaption class="caption">↑最後の方の損失</figcaption>
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="q_all.png" alt="Second GIF Image">
+            <figcaption class="caption">↑全体で見た時のQ関数</figcaption>
+            <!--<figcaption class="caption">Caption for Second Image</figcaption>-->
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="q_first.png" alt="Second GIF Image">
+            <figcaption class="caption">↑最初の方のQ関数</figcaption>
+        </figure>
+    </div>
+    <div class="image-container">
+        <figure>
+            <img class="image" src="q_final.png" alt="Second GIF Image">
+            <figcaption class="caption">↑最後の方のQ関数</figcaption>
+        </figure>
+    </div>
+    seedが1のときが良さそう?(10回もやる必要なかたかも)<br />
+    探索に乱数を使ってたからnp.random.seed()で固定すればうまくと思っていたが, ニューラルネットワークのパラメータを初期値に乱数を使っていたことを昨日の夜思い出したが時既に遅し. <br />
+    ニューラルネットワークのパラメータはtorch.manual_seed()を使うっぽい. <font color="red">今回はマリオのランダム性が高いため, 動画は作ってないです.</font> 次回までに頑張ります.
+    <h2 id="i5">続きから(2023/12/12)</h2>
+    前回seedを固定できていなかった部分を直して0から9までの10個のseedで5000回学習させた.
+
+    <div class="image-container">
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed0_max.gif" alt="First GIF Image">
+            <figcaption class="caption">seed=0</figcaption>
+        </div>
+
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed1_max.gif" alt="Second GIF Image">
+            <figcaption class="caption">seed=1</figcaption>
+        </div>
+    </div>
+    <div class="image-container">
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed2_max.gif" alt="First GIF Image">
+            <figcaption class="caption">seed=2</figcaption>
+        </div>
+
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed3_max.gif" alt="Second GIF Image">
+            <figcaption class="caption">seed=3</figcaption>
+        </div>
+    </div>
+    <div class="image-container">
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed4_max.gif" alt="First GIF Image">
+            <figcaption class="caption">seed=4</figcaption>
+        </div>
+
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed5_max.gif" alt="Second GIF Image">
+            <figcaption class="caption">seed=5</figcaption>
+        </div>
+    </div>
+    <div class="image-container">
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed6_max.gif" alt="First GIF Image">
+            <figcaption class="caption">seed=6</figcaption>
+        </div>
+
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed7_max.gif" alt="Second GIF Image">
+            <figcaption class="caption">seed=7</figcaption>
+        </div>
+    </div>
+    <div class="image-container">
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed8_max.gif" alt="First GIF Image">
+            <figcaption class="caption">seed=8</figcaption>
+        </div>
+
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed9_max.gif" alt="Second GIF Image">
+            <figcaption class="caption">seed=9</figcaption>
+        </div>
+    </div>
+    上のは20回実行させて一番長く進んだものである. <br />
+    また, 下の表は20回実行させた時の各seedの結果である. max_longとmin_longは1-1をどれくらい進んだかの割合である.
+    <table>
+        <caption class="caption">20回実行させた時の各seedの結果</caption>
+        <thead>
+            <tr>
+                <th>seed</th>
+                <th>mean_long</th>
+                <th>mean_reward</th>
+                <th>max_long</th>
+                <th>min_long</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0</td>
+                <td>786</td>
+                <td>1926.1</td>
+                <td>0.511</td>
+                <td>0.113</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>670</td>
+                <td>1198.7</td>
+                <td>0.512</td>
+                <td>0.107</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>909</td>
+                <td>1301.5</td>
+                <td>0.985</td>
+                <td>0.105</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>850</td>
+                <td>1203.6</td>
+                <td>0.545</td>
+                <td>0.109</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>825</td>
+                <td>1162.0</td>
+                <td>0.718</td>
+                <td>0.109</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>944</td>
+                <td>1388.6</td>
+                <td>0.647</td>
+                <td>0.105</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>763</td>
+                <td>1052.6</td>
+                <td>0.508</td>
+                <td>0.108</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>723</td>
+                <td>1590.8</td>
+                <td>0.510</td>
+                <td>0.105</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>868</td>
+                <td>1226.3</td>
+                <td>0.694</td>
+                <td>0.107</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>710</td>
+                <td>976.9</td>
+                <td>0.504</td>
+                <td>0.105</td>
+            </tr>
+        </tbody>
+    </table>
+    seed2が一番ゴールまで近づいていることがわかる. どのseedでも最大半分までは行くことが分かった.
+    <h2 id="i6">続きから(2024/01/10)</h2>
+    <div class="image-container">
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed3_clear.gif" alt="First GIF Image">
+            <figcaption class="caption">seed=3</figcaption>
+        </div>
+
+        <div class="image-caption-container">
+            <img class="image" src="mario_seed5_clear.gif" alt="Second GIF Image">
+            <figcaption class="caption">seed=5</figcaption>
+        </div>
+    </div>
+    <center>
+        <a href="index.html">トップ</a>
+        &emsp;
+        &emsp;
+        <a href="test1.html">DDQN</a>
+        &emsp;
+        &emsp;
+        <a href="test3.html">PER</a>
+        &emsp;
+        &emsp;
+        <a href="test2.html">DDQN遊び</a>
+    </center>
+
+    <script>
+        function setImgWidth() {
+            const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            const images = document.querySelectorAll(".image");
+
+            // ウィンドウの幅と高さのうち、小さい方を取得
+            const smallerDimension = Math.min(windowWidth, windowHeight);
+
+            // 画像の幅を設定
+            images.forEach(image => {
+                image.style.width = smallerDimension + "px";
+            });
+        }
+
+        // ページ読み込み時に初回のサイズを設定
+        setImgWidth();
+
+        // ウィンドウサイズが変更されたときにサイズを自動更新
+        window.addEventListener("resize", setImgWidth);
+    </script>
+</body>
+</html>
